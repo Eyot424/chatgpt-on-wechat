@@ -31,6 +31,8 @@ class BaiduWenxinBot(Bot):
                 elif query == "#清除所有":
                     self.sessions.clear_all_session()
                     reply = Reply(ReplyType.INFO, "所有人记忆已清除")
+                elif query == '#欢迎语':
+                    reply = Reply(ReplyType.TEXT, f"✨ 欢迎加入「TCDAO交易者俱乐部」！我们希望这里是大家共同交流投资方法、分享投资经验的地方，大家有任何问题都可以提出来交流哦！群里有很多我们核心成员，包括金融、互联网、Web3 及传产的高管与项目方，都是各行各业的精英，为保证社群和谐，请遵守以下规定：\n📌 请勿发布任何广告及引流信息，请勿讨论敏感内容\n📌 请勿私下添加群友\n📌 群内分析不构成任何投资建议，内容仅供参考，投资有风险，入市需谨慎\n📌 不遵守规定、恶意刷屏、言论不当的成员会被移除")
                 else:
                     session = self.sessions.session_query(query, session_id)
                     result = self.reply_text(session)
