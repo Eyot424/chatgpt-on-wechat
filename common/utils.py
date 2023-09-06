@@ -3,7 +3,6 @@ import os
 
 from PIL import Image
 
-
 def fsize(file):
     if isinstance(file, io.BytesIO):
         return file.getbuffer().nbytes

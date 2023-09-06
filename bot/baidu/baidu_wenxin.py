@@ -8,6 +8,8 @@ from bridge.reply import Reply, ReplyType
 from common.log import logger
 from config import conf
 from bot.baidu.baidu_wenxin_session import BaiduWenxinSession
+from ratelimit import limits,sleep_and_retry
+
 
 BAIDU_API_KEY = conf().get("baidu_wenxin_api_key")
 BAIDU_SECRET_KEY = conf().get("baidu_wenxin_secret_key")
@@ -18,6 +20,9 @@ class BaiduWenxinBot(Bot):
         super().__init__()
         self.sessions = SessionManager(BaiduWenxinSession, model=conf().get("baidu_wenxin_model") or "eb-instant")
 
+            
+    @sleep_and_retry
+    @limits(calls=1, period=5)
     def reply(self, query, context=None):
         # acquire reply content
         if context and context.type:
@@ -59,7 +64,7 @@ class BaiduWenxinBot(Bot):
                 else:
                     reply = Reply(ReplyType.ERROR, retstring)
                 return reply
-
+            
     def reply_text(self, session: BaiduWenxinSession, retry_count=0):
         try:
             logger.info("[BAIDU] model={}".format(session.model))
